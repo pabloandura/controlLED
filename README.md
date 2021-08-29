@@ -69,14 +69,15 @@ int main(int argc, char const *argv[]){
 typedef struct datos
     {
     int aniNro;
-    char palabra1[tamanoPalabra+2];
-    char palabra2[tamanoPalabra+2];
-    char palabra3[tamanoPalabra+2];
-    char palabra4[tamanoPalabra+2];
+    char palabra1[tamanoPalabra+1]; //hace un vector de palabras de led
+    char palabra2[tamanoPalabra+1];
+    char palabra3[tamanoPalabra+1];
+    char palabra4[tamanoPalabra+1];
     }datosAnimacion_t;
 
 
-datosAnimacion_t ascendente(datosAnimacion_t);
+datosAnimacion_t ascendente(struct datos);
+
 
 ```
 ## Archivo func.h
