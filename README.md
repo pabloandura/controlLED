@@ -4,7 +4,7 @@
 - La parte analogica se conceptualiza como luces de animacion escalable. Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estados dejare las animaciones a un nivel basico.
 
 ## Archivo main.c
-``c
+```c
 //archivo de prototipos
 #include "proto.h"
 //archivo de funciones
@@ -53,10 +53,10 @@ int main(int argc, char const *argv[]){
     return 0;
 }
 
-``
+```
 
 ## Archivo proto.h
-``c
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,9 +78,9 @@ typedef struct datos
 
 datosAnimacion_t ascendente(datosAnimacion_t);
 
-``
+```
 ## Archivo func.h
-``c
+```c
 // archivo de funciones locales al software
 
 //animacion de desplazamiento de palabras de LED en una direccion
@@ -95,5 +95,5 @@ datosAnimacion_t ascendente(datosAnimacion_t){
     return datosAnimacion_t;
 }
 
-``
+```
 ![Image text](fotoEstados.jpg)
