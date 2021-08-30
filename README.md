@@ -1,55 +1,34 @@
  # Memoria Descriptiva Trabajo Practico de Informatica II para Daniel Corbalan y Gustavo Viard
 *Este programa es una representacion en software de un diseno con luces LED que corren en un microcomputador*<br>
-- Usare variables unsigned char porque son correctos en la utilizacion de microcontroladores.
+- Usare variables char porque son correctos en la utilizacion de microcontroladores.
 - La parte analogica se conceptualiza como luces de animacion escalable. Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estados dejare las animaciones a un nivel basico.
 
 ## Archivo main.c
 ```c
-//archivo de prototipos
-#include "proto.h"
-//archivo de funciones
-#include "func.h"
-// Pablo Javier Lopez Andura - 109947 DNI 38-456-394 UTN AVELLANEDA - INFORMATICA II - DAMIAN CORBALAN Y GUSTAVO VIARD
-
-
-//macro setbit
-#define setBit(reg,bit) reg|(1<<bit)
-
-
-int i=0;
-char operador;
-char auxiliar[tamanoPalabra+2]="\0";
-
-
-
-// Limpieza de memoria para el simulador de LEDs con cadenas.
-
 int main(int argc, char const *argv[]){
 
 //inicializo las strings
-    memset(dest, '\0', sizeof(dest));
-    strcpy(datosAnimacion_t.palabra1,"\0");
-    strcpy(datosAnimacion_t.palabra2,"\0");
-    strcpy(datosAnimacion_t.palabra3,"\0");
-    strcpy(datosAnimacion_t.palabra4,"\0");
+    dat_t p;
+
+    p.aniNro=0;
+    char auxiliar[tamanoPalabra+1]="\0";
+
+    strcpy(p.palabra1,"0001");
+    strcpy(p.palabra2,"0010");
+    strcpy(p.palabra3,"0100");
+    strcpy(p.palabra4,"1000");
 
     //comienzo de maquina de estados
 
     do{
+        ascendente(p);
 
-        printf("%s\n",datosAnimacion_t.palabra1);
-        printf("%s\n",datosAnimacion_t.palabra2);
-        printf("%s\n",datosAnimacion_t.palabra3);
-        printf("%s\n",datosAnimacion_t.palabra4);
+        printf("Operador( 0 sale ): \n");
 
-        operador='0';
-        system("pause");
-        system("cls");
-    //inicio funcion de animacion
-        ascendente(datosAnimacion_t);
-        datosAnimacion_t.aniNro++;
-    }while(operador!='0');
-    datosAnimacion_t.aniNro=0;
+        fflush(stdin);
+        scanf("%d", &operador);
+    }while(operador!=0);
+    p.aniNro=0;
     return 0;
 }
 
@@ -65,19 +44,18 @@ int main(int argc, char const *argv[]){
 #define tamanoPalabra 4
 
 
-//defino estructura de datos de las funciones de animacion
+//defino estructura de dat_tos de las funciones de animacion
 typedef struct datos
     {
     int aniNro;
-    char palabra1[tamanoPalabra+1]; //hace un vector de palabras de led
-    char palabra2[tamanoPalabra+1];
-    char palabra3[tamanoPalabra+1];
-    char palabra4[tamanoPalabra+1];
-    }datosAnimacion_t;
+    char palabra1[10]; //hace un vector de palabras de led
+    char palabra2[10];
+    char palabra3[10];
+    char palabra4[10];
+    }dat_t;
 
 
-datosAnimacion_t ascendente(struct datos);
-
+struct datos ascendente(struct datos);
 
 ```
 ## Archivo func.h
@@ -85,16 +63,25 @@ datosAnimacion_t ascendente(struct datos);
 // archivo de funciones locales al software
 
 //animacion de desplazamiento de palabras de LED en una direccion
-datosAnimacion_t ascendente(datosAnimacion_t){
+struct datos ascendente(struct datos p){
     char auxiliar="\0";
-    strcpy(auxiliar,datosAnimacion_t.palabra1);
-    strcpy(datosAnimacion_t.palabra1,datosAnimacion_t.palabra2);
-    strcpy(datosAnimacion_t.palabra2,datosAnimacion_t.palabra3);
-    strcpy(datosAnimacion_t.palabra3,datosAnimacion_t.palabra4);
-    strcpy(datosAnimacion_t.palabra4,auxiliar);
+        printf("%s\n",p.palabra1);
+        printf("%s\n",p.palabra2);
+        printf("%s\n",p.palabra3);
+        printf("%s\n",p.palabra4);
+    //pasamos al primer fotograma
+        system("pause");
+        system("cls");
 
-    return datosAnimacion_t;
+    //inicio funcion de animacion
+        strcpy(auxiliar,p.palabra1);
+        strcpy(p.palabra1,p.palabra2);
+        strcpy(p.palabra2,p.palabra3);
+        strcpy(p.palabra3,p.palabra4);
+        strcpy(p.palabra4,auxiliar);
+        p.aniNro++;
+return p;
 }
+ ascendente(struct datos);
 
 ```
-![Image text](fotoEstados.jpg)
