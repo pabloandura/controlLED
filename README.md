@@ -14,7 +14,7 @@
 
 
 # Codigo en construccion
-&#x1F53A Este código es puramente exploratorio y se convertira en maquina de estados formalmente dicho en los siguientes días. &#x1F53A
+&#x1F53A; Este código es puramente exploratorio y se convertira en maquina de estados formalmente dicho en los siguientes días. &#x1F53A;
 
 ![Diagrama de la maquina de estados](./diagrama.drawio.png)
 
