@@ -7,14 +7,39 @@
 
 ## Archivo main.c
 ```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//archivo de prototipos
+#include "proto.h"
+//archivo de funciones
+#include "func.h"
+// Pablo Javier Lopez Andura - 109947 DNI 38-456-394 UTN AVELLANEDA - INFORMATICA II - DAMIAN CORBALAN Y GUSTAVO VIARD
+
+
+//macro setbit
+#define setBit(reg,bit) reg|(1<<bit)
+#define tamanoPalabra 4
+
+int i=0;
+int operador=1;
+
+
+
 int main(int argc, char const *argv[]){
 
 //inicializo las strings
+
     dat_t p;
 
     p.aniNro=0;
-    char auxiliar[tamanoPalabra+1]="\0";
-
+    char auxiliar[1]="\0";
+    while(1)
+    {
+        if(operador==1){
+            // archivo de memorias de animacion personalizadas
+        }
+    }
     strcpy(p.palabra1,"0001");
     strcpy(p.palabra2,"0010");
     strcpy(p.palabra3,"0100");
@@ -22,14 +47,12 @@ int main(int argc, char const *argv[]){
 
     //comienzo de maquina de estados
 
-    do{
+
         ascendente(p);
 
         printf("Operador( 0 sale ): \n");
-
-        fflush(stdin);
         scanf("%d", &operador);
-    }while(operador!=0);
+
     p.aniNro=0;
     return 0;
 }
@@ -38,10 +61,6 @@ int main(int argc, char const *argv[]){
 
 ## Archivo proto.h
 ```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 // define del tamano de una palabra LED horizontal
 #define tamanoPalabra 4
 
@@ -57,6 +76,8 @@ typedef struct datos
     }dat_t;
 
 
+// funciones de programa
+int abrir(struct datos *);//recibe un puntero a la estructura y retorna un entero el cual indica la dimension del vector
 struct datos ascendente(struct datos);
 
 ```
@@ -66,7 +87,10 @@ struct datos ascendente(struct datos);
 
 //animacion de desplazamiento de palabras de LED en una direccion
 struct datos ascendente(struct datos p){
-    char auxiliar="\0";
+    int operador=1;
+    int i=0;
+    for(i=0;i<4;i++){
+    char auxiliar[10]="\0";
         printf("%s\n",p.palabra1);
         printf("%s\n",p.palabra2);
         printf("%s\n",p.palabra3);
@@ -82,8 +106,42 @@ struct datos ascendente(struct datos p){
         strcpy(p.palabra3,p.palabra4);
         strcpy(p.palabra4,auxiliar);
         p.aniNro++;
+        }
 return p;
 }
- ascendente(struct datos);
+
+int abrir(struct datos *V)//abre el archivo y vuelca los datos en un vector
+{
+    FILE *fp;
+    struct datos aux;
+    char direccion[100];
+    int i=0;
+
+    printf("\nIngrese la ubicacion del archivo: ");
+    fflush(stdin);
+    gets(direccion);
+
+    while(!(fp=fopen(direccion, "rb")))//El bucle se repite mientras el archivo no se pueda abrir
+        {
+        printf("No se pudo abrir el archivo en la ubicacion %s....\n",direccion);
+        printf("\nRevise la ubicacion y vuelva a intentarlo...");
+
+        printf("\nIngrese la ubicacion del archivo: ");
+        fflush(stdin);
+        gets(direccion);
+        }
+    system("CLS");
+
+    fread(&aux,sizeof(aux), 1, fp);
+    while(!feof(fp)) //Paso los datos del archivo al programa
+    {
+        V[i]=aux;
+        i++;//Lo uso como contador para luego leer e imprimir el vector
+        fread(&aux,sizeof(aux), 1, fp);
+    }
+    fclose(fp);//cierro el archivo
+    return i;
+}
+
 
 ```
