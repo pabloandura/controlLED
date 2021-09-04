@@ -14,7 +14,7 @@
 
 
 # Codigo en construccion
-
+<div style="color:red;">Este código es puramente exploratorio y se convertira en maquina de estados formalmente dicho en los siguientes días.</div>
 ![Diagrama de la maquina de estados](./diagrama.drawio.png)
 
 ## Archivo main.c
