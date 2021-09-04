@@ -4,7 +4,7 @@
 - Utilizo el comando system("cls") para generar una demostracion de la animacion a ritmo de fotograma por fotograma.
 - Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estado me enfocare en una sola animacion, luego si alcanzo o si es obligatorio pienso generar un archivo externo de animaciones personalizadas.
 - La luz prendida es un 1 y la luz apagada es un 0.
-
+![](Diagrama.png)
 ## Archivo main.c
 ```c
 #include <stdio.h>
