@@ -1,7 +1,9 @@
  # Memoria Descriptiva Trabajo Practico de Informatica II para Daniel Corbalan y Gustavo Viard
 *Este programa es una representacion en software de un diseno con luces LED que corren en un microcomputador*<br>
-- Usare variables char porque son correctos en la utilizacion de microcontroladores.
-- La parte analogica se conceptualiza como luces de animacion escalable. Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estados dejare las animaciones a un nivel basico.
+- La parte analogica *luces LED y la logica de la maquina de estados* se simula como impresiones de pantalla.
+- Utilizo el comando system("cls") para generar una demostracion de la animacion a ritmo de fotograma por fotograma.
+- Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estado me enfocare en una sola animacion, luego si alcanzo o si es obligatorio pienso generar un archivo externo de animaciones personalizadas.
+- La luz prendida es un 1 y la luz apagada es un 0.
 
 ## Archivo main.c
 ```c
