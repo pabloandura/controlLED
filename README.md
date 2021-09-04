@@ -5,6 +5,11 @@
 - Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estado me enfocare en una sola animacion, luego si alcanzo o si es obligatorio pienso generar un archivo externo de animaciones personalizadas.
 - La luz prendida es un 1 y la luz apagada es un 0.
 
+
+
+
+#Codigo en construccion
+
 ![Diagrama de la maquina de estados](./diagrama.drawio.png)
 
 ## Archivo main.c
@@ -36,12 +41,16 @@ int main(int argc, char const *argv[]){
 
     p.aniNro=0;
     char auxiliar[1]="\0";
+    
+    /*
     while(1)
     {
         if(operador==1){
             // archivo de memorias de animacion personalizadas
         }
     }
+    */
+    
     strcpy(p.palabra1,"0001");
     strcpy(p.palabra2,"0010");
     strcpy(p.palabra3,"0100");
