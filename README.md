@@ -1,9 +1,9 @@
  # Memoria Descriptiva Trabajo Practico de Informatica II para Daniel Corbalan y Gustavo Viard
  <br>
-- La parte analogica *luces LED y la logica de la maquina de estados* se simula como impresiones de pantalla.
-- Utilizo el comando system("cls") para generar una demostracion de la animacion a ritmo de fotograma por fotograma.
-- Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estado me enfocare en una sola animacion, luego si alcanzo o si es obligatorio pienso generar un archivo externo de animaciones personalizadas.
-- El LED prendido es un 1 y el LED apagado es un 0.
+ - La parte analogica *luces LED y la logica de la maquina de estados* se simula como impresiones de pantalla. <br>
+ - Utilizo el comando system("cls") para generar una demostracion de la animacion a ritmo de fotograma por fotograma. <br>
+ - Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estado me enfocare en una sola animacion, luego si alcanzo o si es obligatorio pienso generar un archivo externo de animaciones personalizadas.<br>
+ - El LED prendido es un 1 y el LED apagado es un 0.
 
 <br>
 <br>
