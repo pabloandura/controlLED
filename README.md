@@ -1,9 +1,7 @@
  # Memoria Descriptiva Trabajo Practico de Informatica II para Daniel Corbalan y Gustavo Viard
  <br>
- - La parte analogica *luces LED y la logica de la maquina de estados* se simula como impresiones de pantalla. <br>
- - Utilizo el comando system("cls") para generar una demostracion de la animacion a ritmo de fotograma por fotograma. <br>
- - Por razones de enfocarme en desarrollar el motor y estructura de la maquina de estado me enfocare en una sola animacion, luego si alcanzo o si es obligatorio pienso generar un archivo externo de animaciones personalizadas.<br>
- - El LED prendido es un 1 y el LED apagado es un 0.
+- El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés). 
+- Cuento con una función llamada "prender()" que imprime en consola una demonstración de la lógica del código.
 
 <br>
 <br>
