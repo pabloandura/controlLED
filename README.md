@@ -1,8 +1,8 @@
  # Memoria Descriptiva Trabajo Practico de Informatica II para Daniel Corbalan y Gustavo Viard
  </br>
 - El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés). 
+- La proxima implementacion seria siempre trabajar sobre una estructura de leds para que el estado del led sea unico y no una copia. (en el codigo: *matriz leds vs matriz lux*)
  </br>
-- Cuento con una función llamada "prender()" que imprime en consola una demonstración de la lógica del código.
 
 </br>
 </br>
@@ -16,45 +16,46 @@
 
 ## Archivo main.c
 ```c
-//lado de cuadrado bidimensional
+/**
+- El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés).
+- Cuento con una función llamada "prender()" que imprime en consola una demonstración de la lógica del código.
+-
+*/
+
+//luces por fila, nuestro cuadrado de luces
 #define LED 8
 
 #include <stdio.h>
 #include <stdlib.h>
-//incluimos la libreria de tiempos time.h
-#include <time.h>
-//libreria de typedef definidos por autor
-#include "tipos.h"
+//incluimos la libreria de POSIX para las funciones sleep() y usleep()
+#include <unistd.h>
 //libreria funciones
 #include "funciones.h"
 
-
 //prototipos
-void ritmo(int *bpm);
-void fijado(int *n);
-void prender(int, struct memoria *mem);
+void ritmo(float , int **);
+void fijado(float , int**);
 
-int main(int comandoInt, char *comandoVect)
+//declaro puntero a funciones para los dos estados
+void (*p[])(float, int **)={ritmo,fijado};
+
+
+int main(int comandoInt, char **comandoVect)
 {
     /**
-    "b_bpm" es la funcion local al main que
-    almacena en dinamica el valor de bpm
-    para la funcion ritmo
-
+    "bpm" es la cantidad de ciclos de prendido y apagado por minuto
     "e" es la variable para cambio de estado.
 
     "op" dicta el fin del programa
     */
 
-    int e=0,b_bpm=120,op=0,n=100;
+    int e=0,op=0,leds[LED][LED];
+    float bpm=120;
     //pregunta de estado
     do{
-        if(e)
-            ritmo(b_bpm);
-        else
-            fijado(n);
+        p[e](bpm,leds);
         // se escucha musica?
-        e=detectar();
+        e=detectar(); // e=detectar() es el lugar donde mi programa verificaria si la parte de procesamiento detecta musica sonando
        }while(op);
 //    printf("Bienvenid@\n");
     return 0;
@@ -62,33 +63,69 @@ int main(int comandoInt, char *comandoVect)
 
 ```
 
-## Archivo proto.h
-```c
-typedef struct memoria
-{
-    int leds[LED][LED];
-    char n_programa[15];
-}mem_t;
-mem_t cL;
-
-
-```
 ## Archivo funciones.h
 ```c
-void ritmo(int *bpm)
+void ritmo(float bpm,int **leds)
 {
     /**
     ritmo recibe un int que le indica cuantas
     veces de prenden y apagan las luces en un minuto
-
-    INCOMPLETO: NECESITAMOS CONTROL DE TIEMPOS
-
     */
-    printf("Ritmo");
 
+    printf("Ritmo\n");
+        // inicializamos las variables
+    int i,j,c=0;
+    int lux[LED][LED];
+    printf("*** Demonstracion *** \n\n");
+
+    //impresion
+    for(c=0;c<20;c++)
+    {
+        if(c%2) // si es par o !=0 entra
+        {
+            // apagamos todas
+            for(i=0;i<LED;i++)
+            {
+                for(j=0;j<LED;j++)
+                {
+                lux[i][j]=0;
+                }
+            }
+        }
+        else
+        {
+            // prendemos todas
+            for(i=0;i<LED;i++)
+            {
+                for(j=0;j<LED;j++)
+                {
+                lux[i][j]=1;
+                }
+            }
+        }
+    for(i=0;i<LED;i++)
+        printf("%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n"
+                ,lux[i][0],lux[i][1],lux[i][2],lux[i][3]
+                ,lux[i][4],lux[i][5],lux[i][6],lux[i][7]);
+    /* Seccion de sincronizacion de prendido y apagado
+                Ya que el bpm es la cantidad de pulso por segundo
+                la operacion matematica para llevar a microsegundos es la siguiente.
+
+                ( bpm x 1/60 )^(-1) = 1 ciclo de prendido y apagado
+
+                para llevarlo a microsegundos, lo multiplico por 1.000.000
+
+                Utilizo microsegundos porque me permite tener mas definicion.
+    */
+    usleep((useconds_t)((pow(bpm/60.0,-1)*1000000)));
+
+    system("cls");
+    printf("*** Demonstracion *** \n\n");
+    }
+    printf("Fin de la simulacion\n");
 }
 
-void fijado(int *n)
+void fijado(float n,int **leds)
 {
      /**
     fijado recibe un int que le indica cuantas
@@ -98,43 +135,58 @@ void fijado(int *n)
 
     */
     printf("Fijado\n");
-}
+        // inicializamos las variables
+    int i,j,c=0;
+    int lux[LED][LED];
+    printf("*** Demonstracion *** \n\n");
 
-void prender(int n, struct memoria *mem)
-{
-    /**
-    prender cambia el estado de cada LED
-    */
-    // inicializamos las variables
-    int i,j;
-    mem_t *pm;
-    pm=&mem;
-    // preendemos todas
+    //impresion
+    for(c=0;c<20;c++)
+    {
+        if(c%2) // si es par o !=0 entra
+        {
+            // apagamos todas
+            for(i=0;i<LED;i++)
+            {
+                for(j=0;j<LED;j++)
+                {
+                lux[i][j]=0;
+                }
+            }
+        }
+        else
+        {
+            // prendemos todas
+            for(i=0;i<LED;i++)
+            {
+                for(j=0;j<LED;j++)
+                {
+                lux[i][j]=1;
+                }
+            }
+        }
     for(i=0;i<LED;i++)
-        for(j=0;j<LED;j++)
-            pm->leds[i][j]=1;
+        printf("%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n"
+                ,lux[i][0],lux[i][1],lux[i][2],lux[i][3]
+                ,lux[i][4],lux[i][5],lux[i][6],lux[i][7]);
+    /* Seccion de prendido y apagado en intervalos fijos
 
-    // apagamos todas
-    for(i=0;i<LED;i++)
-        for(j=0;j<LED;j++)
-            pm->leds[i][j]-=1;
-}
+                para llevarlo a microsegundos, lo multiplico por 10.000 ya que n es un numero relativo
+                desde el punto de vista practico
 
-int tiempo(struct time_t *t)
-{
-    /**
-
+                Utilizo microsegundos porque me permite tener mas definicion.
     */
-    time_t epoch = 0;
-    printf("%s", asctime(gmtime(&epoch)));
+    usleep((useconds_t)(n*10000));
+
+    system("cls");
+    printf("*** Demonstracion *** \n\n");
+    }
+    printf("Fin de la simulacion\n");
 }
 
 int detectar(void)
 {
-    printf("\nDetectando\n");
+    printf("\nDetectando...\n");
     return 1;
 }
-
-
-
 ```
