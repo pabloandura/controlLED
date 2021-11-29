@@ -1,8 +1,6 @@
  # Memoria Descriptiva Trabajo Practico de Informatica II para Daniel Corbalan y Gustavo Viard
  </br>
 - El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés). 
-- La proxima implementacion seria siempre trabajar sobre una estructura de leds para que el estado del led sea unico y no una copia. (en el codigo: *matriz leds vs matriz lux*)
- </br>
 
 </br>
 </br>
@@ -16,13 +14,6 @@
 
 ## Archivo main.c
 ```c
-
-/**
-- El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés).
-- Cuento con una función llamada "prender()" que imprime en consola una demonstración de la lógica del código.
--
-*/
-
 //luces por fila, nuestro cuadrado de luces
 #define LED 8
 
