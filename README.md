@@ -38,8 +38,6 @@ int main(int comandoInt, char **comandoVect)
     /**
     "bpm" es la cantidad de ciclos de prendido y apagado por minuto
     "e" es la variable para cambio de estado.
-
-    "op" dicta el fin del programa
     */
 
     int e=0,leds[LED][LED];
