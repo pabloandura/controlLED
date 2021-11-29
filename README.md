@@ -17,6 +17,12 @@
 ## Archivo main.c
 ```c
 
+/**
+- El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés).
+- Cuento con una función llamada "prender()" que imprime en consola una demonstración de la lógica del código.
+-
+*/
+
 //luces por fila, nuestro cuadrado de luces
 #define LED 8
 
@@ -28,11 +34,12 @@
 #include "funciones.h"
 
 //prototipos
-void ritmo(float , int **);
-void fijado(float , int**);
+int ritmo(float , int **, long * );
+int fijado(float , int **, long * );
+int detectar(void);
 
 //declaro puntero a funciones para los dos estados
-void (*p[])(float, int **)={ritmo,fijado};
+int (*p[])(float, int **, long c)={ritmo,fijado};
 
 
 int main(int comandoInt, char **comandoVect)
@@ -44,23 +51,24 @@ int main(int comandoInt, char **comandoVect)
     "op" dicta el fin del programa
     */
 
-    int e=0,op=0,leds[LED][LED];
+    int e=0,leds[LED][LED];
     float bpm=120;
+    long c=0L;
     //pregunta de estado
-    do{
-        p[e](bpm,leds);
-        // se escucha musica?
-        e=detectar(); // e=detectar() es el lugar donde mi programa verificaria si la parte de procesamiento detecta musica sonando
-       }while(op);
-//    printf("Bienvenid@\n");
+    while(1)
+    {
+        e=p[e](bpm,leds,&c);
+        c++;
+    }
     return 0;
 }
+
 
 ```
 
 ## Archivo funciones.h
 ```c
-void ritmo(float bpm,int **leds)
+int ritmo(float bpm,int **leds, long * c)
 {
     /**
     ritmo recibe un int que le indica cuantas
@@ -69,21 +77,18 @@ void ritmo(float bpm,int **leds)
 
     printf("Ritmo\n");
         // inicializamos las variables
-    int i,j,c=0;
-    int lux[LED][LED];
+    int i,j;
     printf("*** Demonstracion *** \n\n");
 
     //impresion
-    for(c=0;c<20;c++)
-    {
-        if(c%2) // si es par o !=0 entra
+        if(*c%2) // si es par o !=0 entra
         {
             // apagamos todas
             for(i=0;i<LED;i++)
             {
                 for(j=0;j<LED;j++)
                 {
-                lux[i][j]=0;
+                leds[i][j]=0;
                 }
             }
         }
@@ -94,14 +99,14 @@ void ritmo(float bpm,int **leds)
             {
                 for(j=0;j<LED;j++)
                 {
-                lux[i][j]=1;
+                leds[i][j]=1;
                 }
             }
         }
     for(i=0;i<LED;i++)
         printf("%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n"
-                ,lux[i][0],lux[i][1],lux[i][2],lux[i][3]
-                ,lux[i][4],lux[i][5],lux[i][6],lux[i][7]);
+                ,leds[i][0],leds[i][1],leds[i][2],leds[i][3]
+                ,leds[i][4],leds[i][5],leds[i][6],leds[i][7]);
     /* Seccion de sincronizacion de prendido y apagado
                 Ya que el bpm es la cantidad de pulso por segundo
                 la operacion matematica para llevar a microsegundos es la siguiente.
@@ -113,14 +118,11 @@ void ritmo(float bpm,int **leds)
                 Utilizo microsegundos porque me permite tener mas definicion.
     */
     usleep((useconds_t)((pow(bpm/60.0,-1)*1000000)));
-
     system("cls");
-    printf("*** Demonstracion *** \n\n");
-    }
-    printf("Fin de la simulacion\n");
+    return detectar();
 }
 
-void fijado(float n,int **leds)
+int fijado(float n,int **leds, long * c)
 {
      /**
     fijado recibe un int que le indica cuantas
@@ -131,21 +133,18 @@ void fijado(float n,int **leds)
     */
     printf("Fijado\n");
         // inicializamos las variables
-    int i,j,c=0;
-    int lux[LED][LED];
+    int i,j;
     printf("*** Demonstracion *** \n\n");
 
     //impresion
-    for(c=0;c<20;c++)
-    {
-        if(c%2) // si es par o !=0 entra
+        if(*c%2) // si es par o !=0 entra
         {
             // apagamos todas
             for(i=0;i<LED;i++)
             {
                 for(j=0;j<LED;j++)
                 {
-                lux[i][j]=0;
+                leds[i][j]=0;
                 }
             }
         }
@@ -156,14 +155,14 @@ void fijado(float n,int **leds)
             {
                 for(j=0;j<LED;j++)
                 {
-                lux[i][j]=1;
+                leds[i][j]=1;
                 }
             }
         }
     for(i=0;i<LED;i++)
         printf("%d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n"
-                ,lux[i][0],lux[i][1],lux[i][2],lux[i][3]
-                ,lux[i][4],lux[i][5],lux[i][6],lux[i][7]);
+                ,leds[i][0],leds[i][1],leds[i][2],leds[i][3]
+                ,leds[i][4],leds[i][5],leds[i][6],leds[i][7]);
     /* Seccion de prendido y apagado en intervalos fijos
 
                 para llevarlo a microsegundos, lo multiplico por 10.000 ya que n es un numero relativo
@@ -172,16 +171,12 @@ void fijado(float n,int **leds)
                 Utilizo microsegundos porque me permite tener mas definicion.
     */
     usleep((useconds_t)(n*10000));
-
-    system("cls");
-    printf("*** Demonstracion *** \n\n");
-    }
-    printf("Fin de la simulacion\n");
+    return detectar();
 }
 
 int detectar(void)
 {
     printf("\nDetectando...\n");
-    return 1;
+    return 0;
 }
 ```
