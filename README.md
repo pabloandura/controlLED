@@ -60,8 +60,11 @@ int main(int comandoInt, char **comandoVect)
 int ritmo(float bpm,int **leds, long * c)
 {
     /**
-    ritmo recibe un int que le indica cuantas
+    ritmo recibe: 
+    un int que le indica cuantas
     veces de prenden y apagan las luces en un minuto
+    un array que tiene los estados de las luces
+    un contador  
     */
 
     printf("Ritmo\n");
@@ -114,11 +117,11 @@ int ritmo(float bpm,int **leds, long * c)
 int fijado(float n,int **leds, long * c)
 {
      /**
-    fijado recibe un int que le indica cuantas
+    fijado recibe:
+    un int que le indica cuantas
     veces de prenden y apagan las luces en un segundo
-
-    INCOMPLETO: NECESITAMOS CONTROL DE TIEMPOS
-
+    un array que tiene los estados de las luces
+    un contador    
     */
     printf("Fijado\n");
         // inicializamos las variables
