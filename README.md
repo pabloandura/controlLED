@@ -17,7 +17,7 @@
 /**
 - El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés).-
 */
-
+char * getKey(char *);
 //luces por fila, nuestro cuadrado de luces
 #define LED 8
 //librerias estandar
@@ -45,7 +45,8 @@
 int ritmo(float , display_t *, long * );
 int fijado(float , display_t *, long * );
 int detectar(void);
-char * getKey(char *);
+
+int setConfiguracion(int*,float*,long*);
 
 //declaro puntero a funciones para los dos estados
 int (*p[])(float, display_t *, long c)={ritmo,fijado};
@@ -53,56 +54,21 @@ int (*p[])(float, display_t *, long c)={ritmo,fijado};
 
 int main(int comandoInt, char **comandoVect)
 {
-//    Codigo de lectura de archivo de configuracion.
-    FILE *conf;
-    char cadena[40], *key, *val, i, nombres[10]; // declaro la cadena auxiliar, los punteros a valores key y val, y la variable que guardara el nombre de las configuraciones
-    char variables[3][20]={"e","c","bpm"}; // declaro e inicializo una matriz para guardar los datos de configuracion
-    int e=0; // declaro variable de estado, y array de leds
-    float bpm=120; // declaro la variable de pulsos por minuto
-    long c=0L; // declaro el contador global
+
+    int e; // declaro variable de estado, y array de leds
+    float bpm; // declaro la variable de pulsos por minuto
+    long c; // declaro el contador global
     display_t leds; // declaro un array bidimensional que en el primer
-    if((conf = fopen("config.conf","rb"))==NULL){
-        printf("\n ERROR: No se encontro el archivo de configuracion.\n");
-        return 1;
-    }
-    fgets(cadena,40,conf);
-    do
-    {
-        key = cadena;
-        if((*key)!= '#' && strlen(key) >= 0) //ignoramos comentario
-        {
-            val = getKey(key); // modifica a key para que solo contenga la clave y devuelve
-            // printf("%s: %s\n",key, val); // Imprime resultado
-            for(i=0;i<3;i++)
-            {
-                if(!strcmp(key,variables[i]))
-                {
-                    switch(i)
-                    {
-                        case 0: e=atoi(val); // usamos funcion atoi
-                            break;
-                        case 1: c=atoi(val);
-                            break;
-                        case 2: strcpy(nombres,val);
-                            break;
-
-                    }
-                }
-            }
-        }
-        fgets(cadena,40,conf);
-    }while(!feof(conf));
-    // FIN DE ARCHIVO DE CONFIGURACION
-
+    int SET; //bandera de configuracion exitorsa
+    SET = setConfiguracion(&e,&bpm,&c);
     //pregunta de estado
-    while(1)
+    while(SET)
     {
         e=p[e](bpm,&leds,&c);
         c++;
     }
     return 0;
 }
-
 ```
 
 ## Archivo funciones.h
@@ -243,6 +209,47 @@ char * getKey(char *key)
     *(key+1)=0;
     return key+i+1;
 }
+int setConfiguracion(int *e,float *bpm,long *c)
+{
+    //    Codigo de lectura de archivo de configuracion.
+    FILE *conf;
+    char variables[3][20]={"e","c","bpm"},i; // declaro e inicializo una matriz para guardar los datos de configuracion
+    char cadena[40], *key, *val; // declaro la cadena auxiliar, los punteros a valores key y val, y la variable que guardara el nombre de las configuraciones
+    if((conf = fopen("config.conf","rb"))==NULL){
+        printf("\n ERROR: No se encontro el archivo de configuracion.\n");
+        return 0;
+    }
+    fgets(cadena,40,conf);
+    do
+    {
+        key = cadena;
+        if((*key)!= '#' && strlen(key) >= 0) //ignoramos comentario
+        {
+            val = getKey(key); // modifica a key para que solo contenga la clave y devuelve
+            // printf("%s: %s\n",key, val); // Imprime resultado
+            for(i=0;i<3;i++)
+            {
+                if(!strcmp(key,variables[i]))
+                {
+                    switch(i)
+                    {
+                        case 0: *e=atoi(val); // usamos funcion atoi
+                            break;
+                        case 1: *c=(long)atoi(val);
+                            break;
+                        case 2: *bpm=(float)atoi(val);
+                            break;
+
+                    }
+                }
+            }
+        }
+        fgets(cadena,40,conf);
+    }while(!feof(conf));
+    // FIN DE ARCHIVO DE CONFIGURACION
+return 1;
+}
+
 
 ```
 ## Archivo tipos.h
@@ -259,6 +266,7 @@ typedef struct
     unsigned char fila8;
 
 }display_t;
+
 
 
 ```
