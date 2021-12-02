@@ -19,22 +19,13 @@
 */
 #include "archivo.h"
 
-//prototipos
-int ritmo(float , display_t *, long * );
-int fijado(float , display_t *, long * );
-int detectar(void);
-char * getKey(char *);
-int setConfiguracion(int*,float*,long*);
-
-//declaro puntero a funciones para los dos estados
-int (*p[])(float, display_t *, long c)={fijado,ritmo};
 
 
 int main(int comandoInt, char **comandoVect)
 {
 
     int e; // declaro variable de estado, y array de leds
-    float bpm=120; // declaro la variable de pulsos por minuto
+    float bpm; // declaro la variable de pulsos por minuto
     long c; // declaro el contador global
     display_t leds; // declaro un array bidimensional que en el primer
     int SET; //bandera de configuracion exitorsa
@@ -232,6 +223,7 @@ int setConfiguracion(int *e,float *bpm,long *c)
 return 1;
 }
 
+
 ```
 ## Archivo archivo.h (contiene cabeceras)
 ```c
@@ -251,6 +243,16 @@ return 1;
 //libreria funciones
 #include "funciones.h"
 
+//prototipos
+int ritmo(float , display_t *, long * );
+int fijado(float , display_t *, long * );
+int detectar(void);
+char * getKey(char *);
+int setConfiguracion(int*,float*,long*);
+
+//declaro puntero a funciones para los dos estados
+int (*p[])(float, display_t *, long c)={fijado,ritmo};
+
 ```
 ## Archivo tipos.h
 ```c
@@ -268,5 +270,18 @@ typedef struct
 }display_t;
 
 
+
+```
+
+## Archivo config.conf
+```bash
+#cambioEstado
+e 0
+
+#contadorGlobal
+c 0L
+
+#pulsosPorMinuto
+bpm 60
 
 ```
