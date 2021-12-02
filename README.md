@@ -143,7 +143,6 @@ int fijado(float n,display_t *leds, long * c)
     */
     printf("Fijado\n");
         // inicializamos las variables
-    int i,j;
     printf("*** Demonstracion *** \n\n");
 
     //impresion
@@ -190,12 +189,16 @@ int fijado(float n,display_t *leds, long * c)
                 Utilizo microsegundos porque me permite tener mas definicion.
     */
     usleep((useconds_t)(n*10000));
+    system("cls");
     return detectar();
 }
 
 int detectar(void)
 {
+    int cont=0;
     printf("\nDetectando...\n");
+    if(kbhit()) //simulamos deteccion de musica
+        return 1;
     return 0;
 }
 
@@ -249,7 +252,6 @@ int setConfiguracion(int *e,float *bpm,long *c)
     // FIN DE ARCHIVO DE CONFIGURACION
 return 1;
 }
-
 
 ```
 ## Archivo tipos.h
