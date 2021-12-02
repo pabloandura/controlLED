@@ -17,46 +17,24 @@
 /**
 - El programa constantemente verifica si se esta reproduciendo música. El prototipo puede contar con una entrada de audio (micrófono/cable 1/4 pulgada TRS) y un convertidor de analógico a digital. Una vez la señal es digital, se puede devolver un valor entero a nuestro programa con la cantidad de pulsos por minuto (beats per minute en inglés).-
 */
-char * getKey(char *);
-//luces por fila, nuestro cuadrado de luces
-#define LED 8
-//librerias estandar
-#include <stdio.h>
-#include <stdlib.h>
-//incluimos string.h para manipular archivo de configuracion
-#include <string.h>
-//incluimos la libreria de POSIX para las funciones sleep() y usleep()
-#include <unistd.h>
-//incluir tipo de datos byte para control de Led
-#include "tipos.h"
-//libreria funciones
-#include "funciones.h"
-// Esta macro es de C de bajo nivel. Nos permite encender bits directamente.
-#define regBit(reg,bit) ((volatile bit_t *)&reg)->B##bit
-//macros de manejo a nivel bit
-        //prende bit seleccionado
-#define setBit(reg,bit) reg|(1<<bit)
-        //apaga bit seleccionado
-#define clearBit(reg,bit) reg&~(1<<bit)
-        //prende o apaga dependiendo de estado actual.
-#define toogleBit(reg,bit) reg^(1<<bit)
+#include "archivo.h"
 
 //prototipos
 int ritmo(float , display_t *, long * );
 int fijado(float , display_t *, long * );
 int detectar(void);
-
+char * getKey(char *);
 int setConfiguracion(int*,float*,long*);
 
 //declaro puntero a funciones para los dos estados
-int (*p[])(float, display_t *, long c)={ritmo,fijado};
+int (*p[])(float, display_t *, long c)={fijado,ritmo};
 
 
 int main(int comandoInt, char **comandoVect)
 {
 
     int e; // declaro variable de estado, y array de leds
-    float bpm; // declaro la variable de pulsos por minuto
+    float bpm=120; // declaro la variable de pulsos por minuto
     long c; // declaro el contador global
     display_t leds; // declaro un array bidimensional que en el primer
     int SET; //bandera de configuracion exitorsa
@@ -69,6 +47,7 @@ int main(int comandoInt, char **comandoVect)
     }
     return 0;
 }
+
 ```
 
 ## Archivo funciones.h
@@ -252,6 +231,25 @@ int setConfiguracion(int *e,float *bpm,long *c)
     // FIN DE ARCHIVO DE CONFIGURACION
 return 1;
 }
+
+```
+## Archivo archivo.h (contiene cabeceras)
+```c
+//luces por fila, nuestro cuadrado de luces
+#define LED 8
+//librerias estandar
+#include <stdio.h>
+#include <stdlib.h>
+//incluimos string.h para manipular archivo de configuracion
+#include <string.h>
+//incluimos conio.h para tener la funcion kbhit()
+#include <conio.h>
+//incluimos la libreria de POSIX para las funciones sleep() y usleep()
+#include <unistd.h>
+//incluir tipo de datos byte para control de Led
+#include "tipos.h"
+//libreria funciones
+#include "funciones.h"
 
 ```
 ## Archivo tipos.h
